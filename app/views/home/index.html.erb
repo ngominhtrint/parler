@@ -7,14 +7,20 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
+        <% if session[:user_id] %>
+          <th>Chat Please</th>
+        <% end %>
       </tr>
     </thead>
 
     <tbody>
-      <% User.all.each do |user| %> 
+      <% @users.each do |user| %> 
         <tr>
           <td><%= user.name %></td>
           <td><%= user.email %></td>
+          <% if session[:user_id] %>
+            <td><%= link_to 'Chat With Me', new_conversation_path(user.id) %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

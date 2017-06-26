@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+  <div class="panel-body" >
+    <div class="messages-list">
+      <table class="table">
+        <thead class="thead thead-default"> 
+          <tr>
+            <th>Sender</th>
+            <th>Message body</th>
+            <th>Read at</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @conversation.messages.order(created_at: 'desc').each do |m| %> 
+            <tr>
+              <td><%= User.find(m.user_id).email %></td>
+              <% if m.read_at.present? %>
+                <td><%= m.body %></td>
+                <td><%= m.read_at %></td>
+              <% else %>
+                <td><b><%= m.body %></b></td>
+                <td><%= link_to 'View', view_message_path(@conversation.id, m.id) %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= form_for [@conversation, @conversation.messages.new] do |f| %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.text_area :body, class: "form-control" %>
+      <%= f.submit "Send", class: "btn btn-success" %>
+    <% end %>
+  </div>
+</div>

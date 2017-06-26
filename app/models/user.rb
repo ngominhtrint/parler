@@ -3,4 +3,7 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true
   validates :name, presence: true
+
+  has_many :conversations
+  has_many :messages
 end
